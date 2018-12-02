@@ -25,6 +25,16 @@ def check_ultrasonic(sensor, test):
     return time.time()
 
 
+def sensor_distance(sensor):
+    StartTime = check_ultrasonic(sensor,0)
+    StopTime = check_ultrasonic(sensor, 1)
+    
+    TimeElapsed = StopTime - StartTime
+    # multiply with the sonic speed (34300 cm/s)
+    # and divide by 2, because there and back
+    return (TimeElapsed * 34300) / 2
+
+
 def distance():
     # set Trigger to HIGH
     GPIO.output(GPIO_TRIGGER_TOP, True)
@@ -37,24 +47,15 @@ def distance():
     GPIO.output(GPIO_TRIGGER_MIDDLE, False)
     GPIO.output(GPIO_TRIGGER_BOTTOM, False)
     
-    #StartTime = time.time()
-    #StopTime = time.time()
- 
-    #while GPIO.input(GPIO_ECHO_TOP) == 0:
-    #    StartTime = time.time()
-    StartTime = check_ultrasonic(GPIO_ECHO_TOP,0)
-    # save time of arrival
-    #while GPIO.input(GPIO_ECHO_TOP) == 1:
-    #    StopTime = time.time()
- 
-    StopTime = check_ultrasonic(GPIO_ECHO_TOP, 1)
-    # time difference between start and arrival
-    TimeElapsed = StopTime - StartTime
-    # multiply with the sonic speed (34300 cm/s)
-    # and divide by 2, because there and back
-    distance = (TimeElapsed * 34300) / 2
- 
-    return distance
+    top_distance = sensor_distance(GPIO_ECHO_TOP)
+    middle_distance = sensor_distance(GPIO_ECHO_MIDDLE)
+    bottom_distance = sensor_distance(GPIO_ECHO_BOTTOM)
+    
+    return {
+            "top":top_distance, 
+            "middle": middle_distance, 
+            "bottom":bottom_distance
+            }
 
 
 def play_sound(file_path):
@@ -71,7 +72,7 @@ if __name__ == "__main__":
     try:
         while True:
             dist = distance()
-            print ("Measured Distance = %.1f cm" % dist)
+            print ("Measured Distances =",dist)
             time.sleep(1)
 
         # Reset by pressing CTRL + C
