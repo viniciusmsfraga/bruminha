@@ -18,7 +18,12 @@ GPIO.setup(GPIO_TRIGGER_MIDDLE, GPIO.OUT)
 GPIO.setup(GPIO_ECHO_MIDDLE, GPIO.IN)
 GPIO.setup(GPIO_TRIGGER_BOTTOM, GPIO.OUT)
 GPIO.setup(GPIO_ECHO_BOTTOM, GPIO.IN)
- 
+
+def check_ultrasonic(sensor, test):
+    while GPIO.input(sensor) == test:
+        pass
+    return time.time()
+
 
 def distance():
     # set Trigger to HIGH
@@ -32,16 +37,17 @@ def distance():
     GPIO.output(GPIO_TRIGGER_MIDDLE, False)
     GPIO.output(GPIO_TRIGGER_BOTTOM, False)
     
-    StartTime = time.time()
-    StopTime = time.time()
+    #StartTime = time.time()
+    #StopTime = time.time()
  
-    while GPIO.input(GPIO_ECHO) == 0:
-        StartTime = time.time()
- 
+    #while GPIO.input(GPIO_ECHO_TOP) == 0:
+    #    StartTime = time.time()
+    StartTime = check_ultrasonic(GPIO_ECHO_TOP,0)
     # save time of arrival
-    while GPIO.input(GPIO_ECHO) == 1:
-        StopTime = time.time()
+    #while GPIO.input(GPIO_ECHO_TOP) == 1:
+    #    StopTime = time.time()
  
+    StopTime = check_ultrasonic(GPIO_ECHO_TOP, 1)
     # time difference between start and arrival
     TimeElapsed = StopTime - StartTime
     # multiply with the sonic speed (34300 cm/s)
