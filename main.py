@@ -48,14 +48,12 @@ def sensor_distance(sensor):
 
 def distance():
     top_distance = sensor_distance(GPIO_ECHO_TOP)
-    middle_distance = sensor_distance(GPIO_ECHO_MIDDLE)
-    bottom_distance = sensor_distance(GPIO_ECHO_BOTTOM)
+    #middle_distance = sensor_distance(GPIO_ECHO_MIDDLE)
+    #bottom_distance = sensor_distance(GPIO_ECHO_BOTTOM)
     
-    return {
-            "top":top_distance, 
-            "middle": middle_distance, 
-            "bottom":bottom_distance
-            }
+    distance = top_distance
+
+    return distance
 
 
 def play_sound(file_path):
@@ -72,7 +70,7 @@ if __name__ == "__main__":
     try:
         while True:
             dist = distance()
-            print ("Measured Distances =",dist)
+            print ("Measured Distance = %.1f cm" % dist)
             time.sleep(1)
 
         # Reset by pressing CTRL + C
