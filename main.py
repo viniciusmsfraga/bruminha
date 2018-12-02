@@ -4,22 +4,34 @@ import time
  
 GPIO.setmode(GPIO.BCM)
  
-GPIO_TRIGGER = 18
-GPIO_ECHO = 24
+GPIO_TRIGGER_TOP = 27
+GPIO_ECHO_TOP = 17
+GPIO_ECHO_MIDDLE = 22
+GPIO_TRIGGER_MIDDLE = 23
+GPIO_ECHO_BOTTOM = 5
+GPIO_TRIGGER_BOTTOM = 6 
  
 #set GPIO direction (IN / OUT)
-GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-GPIO.setup(GPIO_ECHO, GPIO.IN)
+GPIO.setup(GPIO_TRIGGER_TOP, GPIO.OUT)
+GPIO.setup(GPIO_ECHO_TOP, GPIO.IN)
+GPIO.setup(GPIO_TRIGGER_MIDDLE, GPIO.OUT)
+GPIO.setup(GPIO_ECHO_MIDDLE, GPIO.IN)
+GPIO.setup(GPIO_TRIGGER_BOTTOM, GPIO.OUT)
+GPIO.setup(GPIO_ECHO_BOTTOM, GPIO.IN)
  
 
 def distance():
     # set Trigger to HIGH
-    GPIO.output(GPIO_TRIGGER, True)
- 
+    GPIO.output(GPIO_TRIGGER_TOP, True)
+    GPIO.output(GPIO_TRIGGER_MIDDLE, True)
+    GPIO.output(GPIO_TRIGGER_BOTTOM, True)
+
     # set Trigger after 0.01ms to LOW
     time.sleep(0.00001)
-    GPIO.output(GPIO_TRIGGER, False)
- 
+    GPIO.output(GPIO_TRIGGER_TOP, False)
+    GPIO.output(GPIO_TRIGGER_MIDDLE, False)
+    GPIO.output(GPIO_TRIGGER_BOTTOM, False)
+    
     StartTime = time.time()
     StopTime = time.time()
  
